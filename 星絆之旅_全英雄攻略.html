@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>《星絆之旅》全英雄完整攻略</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600;700;900&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0d1f;
+    --bg-soft:#0f1330;
+    --surface:#151b3a;
+    --surface-2:#1c2447;
+    --line:rgba(212,175,106,0.18);
+    --text:#eef1fb;
+    --text-dim:#9aa3c7;
+    --text-faint:#6a7299;
+    --gold:#d4af6a;
+    --gold-soft:#e9cf9a;
+
+    --order:#e7e6f2;
+    --order-bg:rgba(231,230,242,0.1);
+    --moon:#7fa9e6;
+    --moon-bg:rgba(127,169,230,0.12);
+    --sun:#e6994c;
+    --sun-bg:rgba(230,153,76,0.12);
+    --chaos:#a875db;
+    --chaos-bg:rgba(168,117,219,0.12);
+    --star:#e281b5;
+    --star-bg:rgba(226,129,181,0.12);
+
+    --sp:#f0c85e;
+    --sp-bg:linear-gradient(135deg,#5a4212,#3a2c0c);
+    --s:#e6994c;
+    --s-bg:rgba(230,153,76,0.14);
+    --a:#7fa9e6;
+    --a-bg:rgba(127,169,230,0.12);
+    --b:#7fd0c4;
+    --b-bg:rgba(127,208,196,0.1);
+    --c:#7a819e;
+    --c-bg:rgba(122,129,158,0.1);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 60% 40% at 15% 0%, rgba(127,169,230,0.10), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 90% 10%, rgba(212,175,106,0.08), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Noto Sans TC', sans-serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{ font-family:'Noto Serif TC', serif; margin:0; }
+  p{margin:0;}
+
+  /* ===== Starfield backdrop ===== */
+  .stars{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:
+      radial-gradient(1.5px 1.5px at 10% 20%, rgba(255,255,255,0.5), transparent),
+      radial-gradient(1.5px 1.5px at 80% 12%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 60% 65%, rgba(255,255,255,0.35), transparent),
+      radial-gradient(1.5px 1.5px at 35% 80%, rgba(255,255,255,0.4), transparent),
+      radial-gradient(1px 1px at 92% 70%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1px 1px at 25% 45%, rgba(255,255,255,0.3), transparent),
+      radial-gradient(1.5px 1.5px at 70% 40%, rgba(255,255,255,0.35), transparent);
+    background-repeat:repeat;
+    background-size:600px 600px;
+  }
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;
+    padding:76px 24px 56px;
+    text-align:center;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse 70% 60% at 50% -10%, rgba(212,175,106,0.14), transparent 65%);
+    pointer-events:none;
+  }
+  .hero svg.constellation{
+    position:absolute; top:8px; left:50%; transform:translateX(-50%);
+    width:min(720px,90%); height:auto; opacity:0.55;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:12.5px; letter-spacing:0.32em; color:var(--gold-soft);
+    text-transform:uppercase; margin-bottom:22px;
+    font-weight:600;
+  }
+  .eyebrow::before, .eyebrow::after{content:"✦"; font-size:10px; color:var(--gold);}
+  .hero h1{
+    font-size:clamp(32px,5.4vw,56px);
+    font-weight:900;
+    letter-spacing:0.02em;
+    background:linear-gradient(180deg,#fff, var(--gold-soft) 120%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    margin-bottom:16px;
+    position:relative;
+  }
+  .hero .sub{
+    max-width:640px; margin:0 auto; color:var(--text-dim); font-size:15.5px;
+    position:relative;
+  }
+  .hero .meta{
+    margin-top:28px; display:flex; justify-content:center; gap:10px; flex-wrap:wrap;
+    position:relative;
+  }
+  .pill{
+    padding:6px 16px; border-radius:999px; font-size:12.5px; font-weight:600;
+    border:1px solid var(--line); color:var(--text-dim); background:rgba(255,255,255,0.02);
+    letter-spacing:0.02em;
+  }
+
+  /* ===== Tabs (pure CSS) ===== */
+  .tabs-nav{
+    position:sticky; top:0; z-index:50;
+    display:flex; justify-content:center; gap:2px; flex-wrap:wrap;
+    padding:14px 16px;
+    background:rgba(10,13,31,0.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .tabs-nav label{
+    padding:9px 18px; border-radius:10px; font-size:14px; font-weight:600;
+    color:var(--text-faint); cursor:pointer; transition:all .2s ease;
+    border:1px solid transparent;
+    white-space:nowrap;
+  }
+  .tabs-nav label:hover{ color:var(--text); background:rgba(255,255,255,0.04); }
+
+  input[name="maintab"]{display:none;}
+  #t1:checked ~ .tabs-nav label[for="t1"],
+  #t2:checked ~ .tabs-nav label[for="t2"],
+  #t3:checked ~ .tabs-nav label[for="t3"],
+  #t4:checked ~ .tabs-nav label[for="t4"],
+  #t5:checked ~ .tabs-nav label[for="t5"]{
+    color:#1a1206; background:linear-gradient(135deg, var(--gold), var(--gold-soft));
+    border-color:var(--gold);
+  }
+  .panel{ display:none; max-width:1080px; margin:0 auto; padding:48px 24px 90px; animation:fade .4s ease; }
+  @keyframes fade{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+  #t1:checked ~ #p1{display:block;}
+  #t2:checked ~ #p2{display:block;}
+  #t3:checked ~ #p3{display:block;}
+  #t4:checked ~ #p4{display:block;}
+  #t5:checked ~ #p5{display:block;}
+
+  .section-title{
+    display:flex; align-items:baseline; gap:12px; margin-bottom:8px;
+  }
+  .section-title h2{ font-size:24px; color:var(--gold-soft); font-weight:700; }
+  .section-title .idx{ font-size:13px; color:var(--text-faint); letter-spacing:0.1em; }
+  .section-desc{ color:var(--text-dim); font-size:14px; margin-bottom:32px; max-width:680px; }
+
+  .group-label{
+    margin:38px 0 16px; padding-bottom:8px; border-bottom:1px dashed var(--line);
+    display:flex; align-items:center; gap:10px;
+  }
+  .group-label h3{font-size:17px; font-weight:700;}
+  .attr-dot{ width:10px; height:10px; border-radius:50%; flex:none; }
+  .attr-order .attr-dot{background:var(--order);} 
+  .attr-moon .attr-dot{background:var(--moon);}
+  .attr-sun .attr-dot{background:var(--sun);}
+  .attr-chaos .attr-dot{background:var(--chaos);}
+  .attr-star .attr-dot{background:var(--star);}
+  .attr-mix .attr-dot{background:linear-gradient(135deg,var(--star),var(--chaos));}
+
+  /* ===== Hero skill cards ===== */
+  details.hero-card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    margin-bottom:14px;
+    overflow:hidden;
+    transition:border-color .2s ease;
+  }
+  details.hero-card[open]{ border-color:rgba(212,175,106,0.4); }
+  details.hero-card summary{
+    list-style:none; cursor:pointer; padding:18px 20px;
+    display:flex; align-items:center; justify-content:space-between; gap:14px;
+  }
+  details.hero-card summary::-webkit-details-marker{display:none;}
+  .summary-left{display:flex; align-items:center; gap:12px; flex-wrap:wrap;}
+  .hero-name{font-size:16.5px; font-weight:700; font-family:'Noto Serif TC',serif;}
+  .role-tag{
+    font-size:11.5px; padding:3px 10px; border-radius:999px; font-weight:600; letter-spacing:.02em;
+  }
+  .attr-order .role-tag{color:var(--order); background:var(--order-bg);}
+  .attr-moon .role-tag{color:var(--moon); background:var(--moon-bg);}
+  .attr-sun .role-tag{color:var(--sun); background:var(--sun-bg);}
+  .attr-chaos .role-tag{color:var(--chaos); background:var(--chaos-bg);}
+  .attr-star .role-tag{color:var(--star); background:var(--star-bg);}
+  .position{font-size:13px; color:var(--text-dim);}
+  .chevron{ color:var(--text-faint); transition:transform .25s ease; flex:none;}
+  details[open] .chevron{ transform:rotate(180deg); }
+
+  .hero-body{ padding:0 20px 22px; border-top:1px solid var(--line); }
+  .skill-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:12px; margin-top:16px; }
+  .skill-box{ background:var(--surface-2); border-radius:10px; padding:14px 16px; }
+  .skill-box .skill-kind{ font-size:11px; letter-spacing:.08em; color:var(--gold-soft); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:flex; justify-content:space-between; }
+  .skill-box .cd{ color:var(--text-faint); font-weight:500; text-transform:none; letter-spacing:0;}
+  .skill-box .skill-name{ font-size:14px; font-weight:600; margin-bottom:6px; color:var(--text); }
+  .skill-box p{ font-size:13px; color:var(--text-dim); margin-bottom:6px; }
+  .skill-box .lvup{ font-size:12px; color:var(--text-faint); border-top:1px solid var(--line); padding-top:6px; margin-top:6px; }
+
+  /* ===== Tier list ===== */
+  .toggle-row{ display:flex; justify-content:center; margin-bottom:28px; }
+  .seg{ display:inline-flex; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:4px; }
+  input[name="tiertab"]{display:none;}
+  .seg label{ padding:8px 22px; font-size:13.5px; font-weight:700; border-radius:8px; cursor:pointer; color:var(--text-faint); }
+  #pve:checked ~ .toggle-row .seg label[for="pve"],
+  #pvp:checked ~ .toggle-row .seg label[for="pvp"]{ background:var(--gold); color:#1a1206; }
+  #pve-panel, #pvp-panel{ display:none; }
+  #pve:checked ~ #pve-panel{ display:block; }
+  #pvp:checked ~ #pvp-panel{ display:block; }
+
+  .tier-row{
+    display:grid; grid-template-columns:64px 190px 1fr; gap:16px; align-items:center;
+    padding:14px 16px; border-bottom:1px solid var(--line);
+  }
+  .tier-row:last-child{border-bottom:none;}
+  .tier-row.head{ color:var(--text-faint); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; font-weight:700; }
+  .tier-badge{
+    width:48px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center;
+    font-family:'Noto Serif TC',serif; font-weight:900; font-size:14px;
+  }
+  .tier-sp{ background:var(--sp-bg); color:var(--sp); border:1px solid rgba(240,200,94,0.5);}
+  .tier-s{ background:var(--s-bg); color:var(--s); }
+  .tier-a{ background:var(--a-bg); color:var(--a); }
+  .tier-b{ background:var(--b-bg); color:var(--b); }
+  .tier-c{ background:var(--c-bg); color:var(--c); }
+  .tier-hero{ font-weight:700; font-size:14.5px; }
+  .tier-hero .subline{ display:block; font-weight:500; font-size:12px; color:var(--text-faint); margin-top:2px; }
+  .tier-eval{ font-size:13px; color:var(--text-dim); }
+  .tier-block{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:6px 16px; margin-bottom:20px;}
+  .tier-block h4{ padding:14px 0 4px; font-size:13px; color:var(--gold-soft); }
+
+  /* ===== equipment sets ===== */
+  .set-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-bottom:44px; }
+  .set-card{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .set-card .set-name{ font-weight:700; font-size:14.5px; margin-bottom:8px; color:var(--gold-soft); }
+  .set-card p{ font-size:12.5px; color:var(--text-dim); margin-bottom:4px; }
+  .set-card .fit{ font-size:11.5px; color:var(--text-faint); margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); }
+
+  .build-card{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:20px 22px; margin-bottom:16px; }
+  .build-head{ display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+  .build-head h4{ font-size:16px; font-family:'Noto Serif TC',serif; }
+  .build-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:640px){ .build-grid{grid-template-columns:1fr;} }
+  .build-col .label{ font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-faint); font-weight:700; margin-bottom:4px; }
+  .build-col p{ font-size:13px; color:var(--text-dim); margin-bottom:10px; }
+  .artifact-row{ display:flex; gap:8px; margin-bottom:6px; font-size:13px; }
+  .artifact-row .tag{ flex:none; font-size:11px; padding:2px 8px; border-radius:6px; background:var(--surface-2); color:var(--gold-soft); font-weight:700; height:fit-content; }
+
+  /* ===== Team comps ===== */
+  .comp-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; margin-bottom:12px; }
+  .comp-card{ background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:18px 20px; }
+  .comp-card h4{ font-size:15px; margin-bottom:12px; color:var(--gold-soft); }
+  .lane{ display:flex; gap:8px; margin-bottom:8px; font-size:13px; align-items:flex-start;}
+  .lane .lane-tag{ flex:none; font-size:11px; font-weight:700; padding:2px 9px; border-radius:6px; color:#1a1206; background:var(--gold); height:fit-content; margin-top:1px;}
+  .lane .lane-tag.back{ background:var(--moon); }
+  .comp-card .sub-line{ font-size:12.5px; color:var(--text-faint); margin:8px 0; }
+  .comp-card .logic{ font-size:13px; color:var(--text-dim); border-top:1px solid var(--line); padding-top:10px; margin-top:10px; }
+
+  /* ===== tips ===== */
+  .tip-list{ display:flex; flex-direction:column; gap:14px; }
+  .tip{ display:flex; gap:14px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 18px; }
+  .tip .num{ font-family:'Noto Serif TC',serif; font-weight:900; color:var(--gold); font-size:18px; flex:none; width:28px; }
+  .tip .tip-title{ font-weight:700; font-size:14px; margin-bottom:4px; }
+  .tip p{ font-size:13px; color:var(--text-dim); }
+
+  footer{ text-align:center; padding:32px 20px 50px; color:var(--text-faint); font-size:12px; border-top:1px solid var(--line); }
+
+  @media (max-width:560px){
+    .tier-row{ grid-template-columns:44px 1fr; }
+    .tier-row .tier-eval{ grid-column:1/-1; }
+  }
+</style>
+</head>
+<body>
+<div class="stars"></div>
+
+<input type="radio" name="maintab" id="t1" checked>
+<input type="radio" name="maintab" id="t2">
+<input type="radio" name="maintab" id="t3">
+<input type="radio" name="maintab" id="t4">
+<input type="radio" name="maintab" id="t5">
+
+<div class="hero">
+  <svg class="constellation" viewBox="0 0 600 140" fill="none">
+    <g stroke="#d4af6a" stroke-width="1" opacity="0.7">
+      <line x1="40" y1="90" x2="120" y2="40"/>
+      <line x1="120" y1="40" x2="220" y2="60"/>
+      <line x1="220" y1="60" x2="300" y2="20"/>
+      <line x1="300" y1="20" x2="390" y2="55"/>
+      <line x1="390" y1="55" x2="470" y2="30"/>
+      <line x1="470" y1="30" x2="560" y2="85"/>
+    </g>
+    <g fill="#f0c85e">
+      <circle cx="40" cy="90" r="3"/>
+      <circle cx="120" cy="40" r="2.4"/>
+      <circle cx="220" cy="60" r="3.2"/>
+      <circle cx="300" cy="20" r="2.4"/>
+      <circle cx="390" cy="55" r="3"/>
+      <circle cx="470" cy="30" r="2.4"/>
+      <circle cx="560" cy="85" r="3.2"/>
+    </g>
+  </svg>
+  <div class="eyebrow">STAR SAVIOR&nbsp;·&nbsp;繁中攻略</div>
+  <h1>《星絆之旅》<br>全英雄完整攻略</h1>
+  <p class="sub">依國際服 v1.0.19 版本整理，涵蓋技能解析、強度分級、裝備神器搭配與全模式陣容範例，助你打通主線、爬塔、公會戰與競技場。</p>
+  <div class="meta">
+    <span class="pill">版本 v1.0.19</span>
+    <span class="pill">14 位英雄收錄</span>
+    <span class="pill">PVE / PVP 雙分級</span>
+    <span class="pill">全模式陣容</span>
+  </div>
+</div>
+
+<nav class="tabs-nav">
+  <label for="t1">① 技能解析</label>
+  <label for="t2">② 強度分級</label>
+  <label for="t3">③ 裝備與神器</label>
+  <label for="t4">④ 陣容搭配</label>
+  <label for="t5">⑤ 補充要點</label>
+</nav>
+
+<!-- ===================== PANEL 1 : 技能解析 ===================== -->
+<div class="panel" id="p1">
+  <div class="section-title"><span class="idx">壹</span><h2>全英雄技能詳細解析</h2></div>
+  <p class="section-desc">所有技能數值以角色滿級、無限界突破（無凸）為基準；升級效果為技能 Lv.1 至 Lv.10 的成長幅度。點擊卡片展開四項技能細節。</p>
+
+  <div class="group-label attr-order"><span class="attr-dot"></span><h3>秩序屬性</h3></div>
+
+  <details class="hero-card attr-order" open>
+    <summary>
+      <div class="summary-left">
+        <span class="hero-name">禮服阿塞拉（光奶）</span>
+        <span class="role-tag">支援者</span>
+        <span class="position">全能治療／續航支援，輸出兼輔助後衛</span>
+      </div>
+      <span class="chevron">▾</span>
+    </summary>
+    <div class="hero-body">
+      <div class="skill-grid">
+        <div class="skill-box">
+          <div class="skill-kind">固有被動</div>
+          <div class="skill-name">リュニソン</div>
+          <p>最大 HP 提升 5%；使用基本技能後為 HP 占比最低的友軍回復生命值；每層洞察 buff 提升 15% 夾擊發動率，最多 5 層。</p>
+          <div class="lvup">Lv.3：最大 HP 提升至 10%，夾擊率提升至每層 15%／Lv.5：解鎖混沌屬性追加傷害</div>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">基本技能</div>
+          <div class="skill-name">ベル・ラーム</div>
+          <p>對單體敵人造成斬擊傷害並獲得 1 層洞察 buff；新星爆發時解除全體友軍 1 個負面狀態，提升自身強韌固定傷害。</p>
+          <div class="lvup">Lv.2–9：每級 +1% 傷害／Lv.10：額外 +2% 傷害（與自身最大 HP 掛勾）</div>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">特殊技能<span class="cd">冷卻 3 回合</span></div>
+          <div class="skill-name">バル・ドレ</div>
+          <p>對單體造成傷害，為全體友軍回復生命值，附加 2 層不可解除的「星燈的願望」（+10% 速度、+30% 效果耐性），獲得 1 層洞察 buff。</p>
+          <div class="lvup">Lv.4：+2% 傷害／Lv.6：+3% 回復量／Lv.7：+5% 傷害／Lv.10：+5% 回復量</div>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">究極技能<span class="cd">冷卻 5 回合</span></div>
+          <div class="skill-name">ルミエール・ソネット</div>
+          <p>為全體友軍回復生命值、解除 2 個負面狀態，提升全體行動條 15%；新星爆發時回復自身強韌度。</p>
+          <div class="lvup">Lv.6：縮短 1 回合冷卻／Lv.5・8・10：分別 +2%、+2%、+3% 回復量</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <div class="group-label attr-moon"><span class="attr-dot"></span><h3>月屬性</h3></div>
+
+  <details class="hero-card attr-moon">
+    <summary>
+      <div class="summary-left">
+        <span class="hero-name">艾蜜莉（水盾）</span>
+        <span class="role-tag">防禦者</span>
+        <span class="position">攻防一體前排坦克，冷卻縮短機制</span>
+      </div>
+      <span class="chevron">▾</span>
+    </summary>
+    <div class="hero-body">
+      <div class="skill-grid">
+        <div class="skill-box">
+          <div class="skill-kind">固有被動</div>
+          <div class="skill-name">受擊縮短究極冷卻</div>
+          <p>受到攻擊時縮短究極技能冷卻；單體攻擊縮短 1 回合，全體攻擊縮短 2 回合；滿突破（3 凸）開戰獲得 1 回合護盾，受擊後額外縮短特殊技能冷卻。</p>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">基本技能</div>
+          <div class="skill-name">護盾連擊</div>
+          <p>單體攻擊，附加以自身最大 HP 為基準的額外傷害；發動後獲得小額護盾。</p>
+          <div class="lvup">Lv.10：+3% 傷害；護盾耐久與最大 HP 掛勾</div>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">特殊技能<span class="cd">冷卻 4 回合</span></div>
+          <div class="skill-name">守護部署</div>
+          <p>為自身與單體友軍附加護盾，提升全體友軍防禦力；同時提升自身攻擊力與究極傷害加成。</p>
+          <div class="lvup">Lv.6：提升護盾耐久／Lv.10：額外 +15% 防禦加成</div>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">究極技能<span class="cd">冷卻 6 回合</span></div>
+          <div class="skill-name">疊層爆發斬</div>
+          <p>對單體敵人造成大量傷害，累積 1 層「冷卻 stack」；每層 +15% 究極傷害，最大疊 10 層；使用後依 stack 數量縮短冷卻。</p>
+          <div class="lvup">Lv.6：縮短 1 回合基礎冷卻／Lv.10：額外 +20% 傷害加成</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="hero-card attr-moon">
+    <summary>
+      <div class="summary-left">
+        <span class="hero-name">兔女郎夏爾（火兔）</span>
+        <span class="role-tag" style="color:var(--sun);background:var(--sun-bg);">暗殺者</span>
+        <span class="position">頂尖單體／範圍輸出，額外行動機制</span>
+      </div>
+      <span class="chevron">▾</span>
+    </summary>
+    <div class="hero-body">
+      <div class="skill-grid">
+        <div class="skill-box">
+          <div class="skill-kind">固有被動</div>
+          <div class="skill-name">點火疊層</div>
+          <p>攻擊時累積「點火」stack，最大 5 層；每層 +8% 攻擊力；滿層時重置究極技能冷卻，獲得 1 回合額外行動。</p>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">基本技能</div>
+          <div class="skill-name">連續斬擊</div>
+          <p>單體連續攻擊，對帶 debuff 敵人附加 30% 額外傷害；有機率觸發兩次連擊。</p>
+          <div class="lvup">Lv.10：+3% 傷害；對灼燒敵人額外 +15% 傷害</div>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">特殊技能<span class="cd">冷卻 3 回合</span></div>
+          <div class="skill-name">灼熱點燃</div>
+          <p>提升全體友軍 2 回合攻擊力加成，對單體敵人附加「灼燒」（2 回合持續傷害）；自身獲得 1 層點火 stack。</p>
+          <div class="lvup">Lv.6：提升 buff 比例／Lv.10：延長 buff 至 3 回合</div>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">究極技能<span class="cd">冷卻 5 回合</span></div>
+          <div class="skill-name">業火裁決</div>
+          <p>對單體敵人造成極高傷害，消耗全部點火 stack，每層 +12% 傷害；擊殺目標後重置技能冷卻。</p>
+          <div class="lvup">Lv.6：縮短 1 回合冷卻／Lv.10：額外 +25% 傷害加成</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="hero-card attr-moon">
+    <summary>
+      <div class="summary-left">
+        <span class="hero-name">兔女郎克萊爾（水兔）</span>
+        <span class="role-tag" style="color:var(--sun);background:var(--sun-bg);">暗殺者</span>
+        <span class="position">高機動連續輸出，行動條增益</span>
+      </div>
+      <span class="chevron">▾</span>
+    </summary>
+    <div class="hero-body">
+      <div class="skill-grid">
+        <div class="skill-box">
+          <div class="skill-kind">固有被動</div>
+          <div class="skill-name">暴擊強化疊層</div>
+          <p>暴擊率提升 20%；每次暴擊獲得 1 層「強化」stack，滿 3 層時縮短特殊技能冷卻，提升自身 30% 行動條。</p>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">基本技能</div>
+          <div class="skill-name">迅捷連斬</div>
+          <p>單體兩次攻擊，依自身速度提升額外傷害；50% 機率附加「傷害增加」debuff。</p>
+          <div class="lvup">Lv.10：+3% 傷害；對防禦低下敵人額外 +20% 傷害</div>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">特殊技能<span class="cd">冷卻 3 回合</span></div>
+          <div class="skill-name">凌厲一擊</div>
+          <p>提升自身暴擊傷害並對單體造成傷害；獲得 2 層強化 stack；若擊殺目標，獲得 1 回合額外行動。</p>
+          <div class="lvup">Lv.6：提升 buff 比例／Lv.10：延長 buff 至 3 回合</div>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">究極技能<span class="cd">冷卻 5 回合</span></div>
+          <div class="skill-name">絕對零度</div>
+          <p>對單體造成超高傷害，消耗全部強化 stack，每層 +10% 傷害；持有 3 層以上 buff 時額外造成 20% 真實傷害。</p>
+          <div class="lvup">Lv.6：縮短 1 回合冷卻／Lv.10：額外 +20% 傷害加成</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <div class="group-label attr-sun"><span class="attr-dot"></span><h3>太陽屬性</h3></div>
+
+  <details class="hero-card attr-sun">
+    <summary>
+      <div class="summary-left">
+        <span class="hero-name">希爾德（火盾）</span>
+        <span class="role-tag">防禦者</span>
+        <span class="position">團隊免疫坦克，全體護盾與反傷機制</span>
+      </div>
+      <span class="chevron">▾</span>
+    </summary>
+    <div class="hero-body">
+      <div class="skill-grid">
+        <div class="skill-box">
+          <div class="skill-kind">固有被動</div>
+          <div class="skill-name">開戰護盾</div>
+          <p>開戰時為全體友軍附加 1 回合護盾，提升全體效果耐性；護盾存在時受到的範圍傷害降低 15%。</p>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">基本技能</div>
+          <div class="skill-name">嘲諷斬</div>
+          <p>單體攻擊，附加以自身最大 HP 為基準的額外傷害；同時嘲諷敵人吸引單體攻擊。</p>
+          <div class="lvup">Lv.10：+3% 傷害；嘲諷延長至 2 回合</div>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">特殊技能<span class="cd">冷卻 4 回合</span></div>
+          <div class="skill-name">聖焰結界</div>
+          <p>為全體友軍附加護盾並提升防禦力；自身獲得「反傷」狀態，持續 2 回合。</p>
+          <div class="lvup">Lv.6：提升護盾耐久／Lv.10：額外 +20% 反傷比例</div>
+        </div>
+        <div class="skill-box">
+          <div class="skill-kind">究極技能<span class="cd">冷卻 6 回合</span></div>
+          <div class="skill-name">審判烈日</div>
+          <p>對單體敵人造成傷害，自身獲得 3 層「傷害減免」，同時使敵人攻擊力降低，持續 2 回合。</p>
+          <div class="lvup">Lv.6：縮短 1 回合冷卻／Lv.10：額外降低敵人 20% 攻擊力</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <div class="group-label attr-mix"><span class="attr-dot"></span><h3>其他核心英雄</h3></div>
+
+  <details class="hero-card attr-chaos">
+    <summary>
+      <div class="summary-left">
+        <span class="hero-name">繆莉爾</span>
+        <span class="role-tag">遊擊手</span>
+        <span class="position">debuff 延伸，範圍傷害，攻擊力降低</span>
+      </div>
+      <span class="chevron">▾</span>
+    </summary>
+    <div class="hero-body">
+      <div class="skill-grid">
+        <div class="skill-box">
+          <div class="skill-kind">技能特色</div>
+          <p>究極技能對範圍敵人造成傷害並延伸所有負面狀態持續時間；特殊技能可將敵人攻擊力降低 30%，持續 2 回合。</p>
+          <div class="lvup">適合需要長時間控場的困難副本</div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="hero-card attr-order">
+    <summary>
+      <div class="summary-left">
+        <span class="hero-name">蒂莉亞</span>
+        <span class="role-tag">遊擊手</span>
+        <span class="position">全體範圍傷害，隊伍範圍 buff</span>
+      </div>
+      <span class="chevron">▾</span>
+    </summary>
+    <div class="hero-body">
+      <div class="skill-grid">
+        <div class="skill-box">
+          <div class="skill-kind">技能特色</div>
+          <p>所有技能均為範圍攻擊；特殊技能提升全體友軍範圍傷害加成，究極技能對全體敵人造成高額傷害。</p>
+          <div class="lvup">清雜兵、多數 PVE 關卡的核心輸出</div>
+        </div>
+      </div>
+    </div>
+  </details>
+</div>
+
+<!-- ===================== PANEL 2 : 強度分級 ===================== -->
+<div class="panel" id="p2">
+  <div class="section-title"><span class="idx">貳</span><h2>英雄強度分級</h2></div>
+  <p class="section-desc">以全角色滿突破、滿技能潛力為基準，綜合泛用性、技能機制、團隊貢獻與成長曲線四個維度評定。</p>
+
+  <input type="radio" name="tiertab" id="pve" checked>
+  <input type="radio" name="tiertab" id="pvp">
+  <div class="toggle-row">
+    <div class="seg">
+      <label for="pve">PVE 分級</label>
+      <label for="pvp">PVP 分級</label>
+    </div>
+  </div>
+
+  <div id="pve-panel">
+    <p class="section-desc" style="margin-bottom:16px;">適用於主線、困難旅程、探索副本。</p>
+    <div class="tier-block">
+      <div class="tier-row head"><span>Tier</span><span>英雄 / 屬性</span><span>核心評價</span></div>
+      <div class="tier-row"><span class="tier-badge tier-sp">S+</span><span class="tier-hero">禮服阿塞拉<span class="subline">秩序・支援者</span></span><span class="tier-eval">全能續航兼輸出，全體回復、解控、推條能力，可適配絕大多數隊伍，無屬性劣勢。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-sp">S+</span><span class="tier-hero">艾蜜莉<span class="subline">月・防禦者</span></span><span class="tier-eval">最強前排坦克，被擊中縮短究極冷卻，扛傷輸出兼備，自帶全體護盾與防禦 buff。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-sp">S+</span><span class="tier-hero">兔女郎夏爾<span class="subline">太陽・暗殺者</span></span><span class="tier-eval">頂尖單體／範圍輸出，自帶攻擊 buff，點火機制可連續釋放究極技能，循環效率極高。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-sp">S+</span><span class="tier-hero">兔女郎克萊爾<span class="subline">月・暗殺者</span></span><span class="tier-eval">高機動持續輸出，疊層提升暴擊與行動條，額外行動機制讓輸出頻率遠高於其他角色。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-s">S</span><span class="tier-hero">希爾德<span class="subline">太陽・防禦者</span></span><span class="tier-eval">團隊免疫型坦克，全體護盾＋效果耐性，反傷機制提升輸出，克制多數群體大招 BOSS。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-s">S</span><span class="tier-hero">繆莉爾<span class="subline">混沌・遊擊手</span></span><span class="tier-eval">獨特 debuff 延伸能力，可延長減攻／灼燒／凍結，配合破甲手大幅提升團隊上限。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-s">S</span><span class="tier-hero">蒂莉亞<span class="subline">秩序・遊擊手</span></span><span class="tier-eval">全體範圍傷害第一人，被動提升團隊範圍傷害，清雜兵和多數 BOSS 戰表現突出。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-s">S</span><span class="tier-hero">貝爾・里斯<span class="subline">星・遊擊手</span></span><span class="tier-eval">強力 debuff 輸出，對帶增益敵人造成額外傷害，剋制 buff 型 BOSS 和 PVP 隊伍。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-a">A</span><span class="tier-hero">蘿蓓塔<span class="subline">星・遊擊手</span></span><span class="tier-eval">範圍輸出兼破韌，技能容易循環，適配多種屬性隊伍。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-a">A</span><span class="tier-hero">莉迪亞<span class="subline">混沌・遊擊手</span></span><span class="tier-eval">減速＋破甲輔助，可壓制 BOSS 行動條，提升團隊容錯率。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-a">A</span><span class="tier-hero">賽拉<span class="subline">秩序・支援者</span></span><span class="tier-eval">推條＋加速輔助，加快友軍技能冷卻，長時間戰鬥的核心工具人。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-b">B</span><span class="tier-hero">花嫁卡門<span class="subline">太陽・防禦者</span></span><span class="tier-eval">可作坦克替代，擁有嘲諷技能，整體性能不如艾蜜莉、希爾德。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-b">B</span><span class="tier-hero">瑟潘<span class="subline">太陽・支援者</span></span><span class="tier-eval">單體護盾輔助，技能升級需求低，適合新手過渡期使用。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-c">C</span><span class="tier-hero">特莉休<span class="subline">星・暗殺者</span></span><span class="tier-eval">輸出不穩定，缺少團隊增益，上位替代眾多。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-c">C</span><span class="tier-hero">卡門<span class="subline">混沌・防禦者</span></span><span class="tier-eval">耐久不足，被動技能實用性低，容易被更高階坦克替換。</span></div>
+    </div>
+  </div>
+
+  <div id="pvp-panel">
+    <p class="section-desc" style="margin-bottom:16px;">適用於競技場、聯盟戰。</p>
+    <div class="tier-block">
+      <div class="tier-row head"><span>Tier</span><span>英雄 / 屬性</span><span>核心評價</span></div>
+      <div class="tier-row"><span class="tier-badge tier-s">S</span><span class="tier-hero">艾蜜莉<span class="subline">月・防禦者</span></span><span class="tier-eval">前排耐久最高，被擊中縮短冷卻，扛傷輸出兼備，幾乎所有防守隊伍都會帶她。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-s">S</span><span class="tier-hero">希爾德<span class="subline">太陽・防禦者</span></span><span class="tier-eval">開場全體護盾＋免疫，可克制先手爆發隊伍，反傷讓近戰輸出難以應對。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-s">S</span><span class="tier-hero">兔女郎夏爾<span class="subline">太陽・暗殺者</span></span><span class="tier-eval">先手爆發核心，點火機制可在第二回合釋放究極技能秒殺後衛核心。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-s">S</span><span class="tier-hero">兔女郎克萊爾<span class="subline">月・暗殺者</span></span><span class="tier-eval">高機動連擊，快速疊層觸發額外行動，優先擊殺對方後衛輸出。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-s">S</span><span class="tier-hero">貝爾・里斯<span class="subline">星・遊擊手</span></span><span class="tier-eval">克制 buff 型隊伍，技能可無視敵人防禦，對 S 級坦克也能造成可觀傷害。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-s">S</span><span class="tier-hero">艾麗莎<span class="subline">月・支援者</span></span><span class="tier-eval">攜帶復活技能，可關鍵時刻拉起核心輸出，大幅提升防守上限。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-a">A</span><span class="tier-hero">禮服阿塞拉<span class="subline">秩序・支援者</span></span><span class="tier-eval">續航能力強，但啟動時間長，容易被先手爆發隊伍壓制。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-a">A</span><span class="tier-hero">繆莉爾<span class="subline">混沌・遊擊手</span></span><span class="tier-eval">debuff 延伸效果顯著，但需配合低速隊伍發揮實力。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-a">A</span><span class="tier-hero">蒂莉亞<span class="subline">秩序・遊擊手</span></span><span class="tier-eval">範圍傷害可壓制敵人血線，但缺少針對後衛的單體爆發。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-b">B</span><span class="tier-hero">賽拉<span class="subline">秩序・支援者</span></span><span class="tier-eval">推條能力不錯，但自身生存能力太低，容易被秒殺。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-b">B</span><span class="tier-hero">莉迪亞<span class="subline">混沌・遊擊手</span></span><span class="tier-eval">減速效果顯著，但命中要求高，沒堆命中容易空技能。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-c">C</span><span class="tier-hero">特莉休<span class="subline">星・暗殺者</span></span><span class="tier-eval">輸出不穩定，缺少抗打能力，碰見防守隊伍完全沒有發揮空間。</span></div>
+      <div class="tier-row"><span class="tier-badge tier-c">C</span><span class="tier-hero">蘿蓓塔<span class="subline">星・遊擊手</span></span><span class="tier-eval">技能循環慢，傷害上限低，無法適配 PVP 節奏。</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PANEL 3 : 裝備與神器 ===================== -->
+<div class="panel" id="p3">
+  <div class="section-title"><span class="idx">參</span><h2>推薦裝備、神器與羈絆</h2></div>
+  <p class="section-desc">裝備以 2 件套／4 件套為核心效果，以下為六大實用套裝總覽，以及六位核心英雄的完整養成配置。</p>
+
+  <div class="set-grid">
+    <div class="set-card"><div class="set-name">體力套裝</div><p>2 件套 HP +15%</p><p>4 件套 HP +30%</p><div class="fit">適合坦克、以最大 HP 掛勾輸出的支援者</div></div>
+    <div class="set-card"><div class="set-name">防壁套裝</div><p>2 件套 HP +10%、效果耐性 +5%</p><p>4 件套 HP +15%、效果耐性 +10%</p><div class="fit">適合所有需要生存的角色</div></div>
+    <div class="set-card"><div class="set-name">速度套裝</div><p>2 件套速度 +10</p><p>4 件套速度 +15</p><div class="fit">適合支援者、遊擊手、需要先手的輸出</div></div>
+    <div class="set-card"><div class="set-name">暴擊套裝</div><p>2 件套暴擊率 +10%</p><p>4 件套暴擊率 +15%</p><div class="fit">適合依賴暴擊的暗殺者、遊擊手</div></div>
+    <div class="set-card"><div class="set-name">破壞套裝</div><p>2 件套攻擊力 +15%</p><p>4 件套攻擊力 +30%</p><div class="fit">適合純輸出型角色</div></div>
+    <div class="set-card"><div class="set-name">鬥志套裝</div><p>2 件套暴擊傷害 +15%</p><p>4 件套暴擊傷害 +30%</p><div class="fit">適合高暴擊輸出搭配</div></div>
+  </div>
+
+  <div class="build-card">
+    <div class="build-head"><h4>禮服阿塞拉</h4><span class="role-tag" style="color:var(--order);background:var(--order-bg);">秩序・支援者</span></div>
+    <div class="build-grid">
+      <div class="build-col">
+        <div class="label">PVE 裝備</div>
+        <p>體力 4 件套＋防壁 2 件套；項鍊速度／HP%、戒指 HP%；副屬性優先 HP%、暴擊率、暴擊傷害、效果耐性</p>
+        <div class="label">PVP 裝備</div>
+        <p>速度 4 件套＋防壁 2 件套；項鍊速度、戒指 HP%；副屬性優先速度、HP%、效果耐性</p>
+      </div>
+      <div class="build-col">
+        <div class="label">神器推薦</div>
+        <div class="artifact-row"><span class="tag">核心</span><span>星燈的願望——提升最大 HP、治療量，技能可額外解除友軍負面狀態</span></div>
+        <div class="artifact-row"><span class="tag">次選</span><span>黎明的齊唱——提升行動條加成、技能冷卻縮短，加快全隊迴轉率</span></div>
+        <div class="label">羈絆與潛力</div>
+        <p>優先與艾蜜莉、兔女郎夏爾解鎖羈絆；潛力優先 AXN 號、FXN 號，副屬性看 HP%、暴擊率、速度</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="build-head"><h4>艾蜜莉</h4><span class="role-tag" style="color:var(--moon);background:var(--moon-bg);">月・防禦者</span></div>
+    <div class="build-grid">
+      <div class="build-col">
+        <div class="label">PVE 裝備</div>
+        <p>體力 4 件套＋防壁 2 件套；項鍊 HP%、戒指 HP%；副屬性優先 HP%、防禦%、效果耐性、會心率</p>
+        <div class="label">PVP 裝備</div>
+        <p>速度 4 件套＋防壁 2 件套；項鍊速度、戒指 HP%；副屬性優先速度、HP%、防禦%</p>
+      </div>
+      <div class="build-col">
+        <div class="label">神器推薦</div>
+        <div class="artifact-row"><span class="tag">核心</span><span>不動的戰意——提升最大 HP、防禦力，被攻擊時有機率額外縮短技能冷卻</span></div>
+        <div class="artifact-row"><span class="tag">次選</span><span>守護的光輪——提升護盾耐久、全體傷害減免</span></div>
+        <div class="label">羈絆與潛力</div>
+        <p>優先與禮服阿塞拉、兔女郎克萊爾解鎖羈絆；潛力優先 BX2 號、EX5 號，副屬性看 HP%、防禦%、會心率</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="build-head"><h4>兔女郎夏爾</h4><span class="role-tag" style="color:var(--sun);background:var(--sun-bg);">太陽・暗殺者</span></div>
+    <div class="build-grid">
+      <div class="build-col">
+        <div class="label">PVE 裝備</div>
+        <p>破壞 4 件套＋鬥志 2 件套；項鍊攻擊力%、戒指暴擊率%；副屬性優先暴擊率、暴擊傷害、攻擊力%、速度</p>
+        <div class="label">PVP 裝備</div>
+        <p>速度 4 件套＋鬥志 2 件套；項鍊速度、戒指暴擊傷害%；副屬性優先速度、暴擊傷害、攻擊力%</p>
+      </div>
+      <div class="build-col">
+        <div class="label">神器推薦</div>
+        <div class="artifact-row"><span class="tag">核心</span><span>炎之鬪爭——提升攻擊力、暴擊率，攻擊灼燒敵人時附加 20% 額外傷害</span></div>
+        <div class="artifact-row"><span class="tag">次選</span><span>決死的猛進——提升額外行動機率，擊殺敵人後重置技能冷卻</span></div>
+        <div class="label">羈絆與潛力</div>
+        <p>優先與禮服阿塞拉、繆莉爾解鎖羈絆；潛力優先 DXN 號，副屬性看暴擊率、暴擊傷害、攻擊力%、速度</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="build-head"><h4>兔女郎克萊爾</h4><span class="role-tag" style="color:var(--moon);background:var(--moon-bg);">月・暗殺者</span></div>
+    <div class="build-grid">
+      <div class="build-col">
+        <div class="label">PVE 裝備</div>
+        <p>破壞 4 件套＋鬥志 2 件套；項鍊攻擊力%、戒指暴擊率%；副屬性優先暴擊率、暴擊傷害、攻擊力%、速度</p>
+        <div class="label">PVP 裝備</div>
+        <p>速度 4 件套＋鬥志 2 件套；項鍊速度、戒指暴擊傷害%；副屬性優先速度、暴擊傷害、攻擊力%</p>
+      </div>
+      <div class="build-col">
+        <div class="label">神器推薦</div>
+        <div class="artifact-row"><span class="tag">核心</span><span>月光的連擊——提升攻擊力、連擊機率，每次連擊額外增加 1 層強化 stack</span></div>
+        <div class="artifact-row"><span class="tag">次選</span><span>瞬滅的閃光——提升行動條加成、技能冷卻縮短</span></div>
+        <div class="label">羈絆與潛力</div>
+        <p>優先與艾蜜莉、希爾德解鎖羈絆；潛力優先 DXN 號，副屬性看暴擊率、暴擊傷害、攻擊力%、速度</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="build-head"><h4>希爾德</h4><span class="role-tag" style="color:var(--sun);background:var(--sun-bg);">太陽・防禦者</span></div>
+    <div class="build-grid">
+      <div class="build-col">
+        <div class="label">PVE 裝備</div>
+        <p>體力 4 件套＋防壁 2 件套；項鍊 HP%、戒指 HP%；副屬性優先 HP%、防禦%、效果耐性、攻擊力%</p>
+        <div class="label">PVP 裝備</div>
+        <p>體力 4 件套＋防壁 2 件套；項鍊 HP%、戒指 HP%；副屬性優先 HP%、防禦%、效果耐性</p>
+      </div>
+      <div class="build-col">
+        <div class="label">神器推薦</div>
+        <div class="artifact-row"><span class="tag">核心</span><span>鐵壁的防護——提升最大 HP、防禦力，開戰時額外獲得 1 層傷害減免</span></div>
+        <div class="artifact-row"><span class="tag">次選</span><span>反撃的咆哮——提升反傷比例、嘲諷持續時間</span></div>
+        <div class="label">羈絆與潛力</div>
+        <p>優先與兔女郎夏爾、貝爾・里斯解鎖羈絆；潛力優先 BXN 號，副屬性看 HP%、防禦%、效果耐性</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="build-card">
+    <div class="build-head"><h4>繆莉爾</h4><span class="role-tag" style="color:var(--chaos);background:var(--chaos-bg);">混沌・遊擊手</span></div>
+    <div class="build-grid">
+      <div class="build-col">
+        <div class="label">PVE 裝備</div>
+        <p>破壞 2 件套＋鬥志 2 件套＋效果命中 2 件套；項鍊攻擊力%、戒指效果命中%；副屬性優先效果命中、攻擊力%、暴擊率、速度</p>
+        <div class="label">PVP 裝備</div>
+        <p>速度 4 件套＋效果命中 2 件套；項鍊速度、戒指效果命中%；副屬性優先速度、效果命中、攻擊力%</p>
+      </div>
+      <div class="build-col">
+        <div class="label">神器推薦</div>
+        <div class="artifact-row"><span class="tag">核心</span><span>闇之深淵——提升效果命中、debuff 持續時間，延伸敵人所有負面狀態的回合數</span></div>
+        <div class="artifact-row"><span class="tag">次選</span><span>滅殺の譏笑——提升範圍傷害、對 debuff 敵人的額外傷害</span></div>
+        <div class="label">羈絆與潛力</div>
+        <p>優先與兔女郎夏爾、莉迪亞解鎖羈絆，與莉迪亞的羈絆可強化減速 debuff 效果</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PANEL 4 : 陣容搭配 ===================== -->
+<div class="panel" id="p4">
+  <div class="section-title"><span class="idx">肆</span><h2>全模式陣容搭配範例</h2></div>
+  <p class="section-desc">通用公式：1 坦克＋1 支援／治療＋2 輸出，前線吸收約 80% 傷害，後線安排輸出與支援。屬性剋制優先度：太陽 > 月 > 星 > 太陽，秩序與混沌互相剋制。</p>
+
+  <div class="group-label attr-order"><span class="attr-dot"></span><h3>PVE 陣容（主線・困難旅程・一般副本）</h3></div>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <h4>光暗全能隊</h4>
+      <div class="lane"><span class="lane-tag">前線</span><span>艾蜜莉（坦克）＋希爾德（副坦克）</span></div>
+      <div class="lane"><span class="lane-tag back">後線</span><span>禮服阿塞拉（治療／支援）＋兔女郎夏爾（主力輸出）</span></div>
+      <div class="sub-line">替換：希爾德→卡門／夏爾→克萊爾／阿塞拉→艾麗莎</div>
+      <div class="logic">雙坦克提供極高團隊耐久，阿塞拉持續續航，夏爾負責清場；秩序屬性無劣勢，可通吃所有主線內容。</div>
+    </div>
+    <div class="comp-card">
+      <h4>月屬性爆發隊</h4>
+      <div class="lane"><span class="lane-tag">前線</span><span>艾蜜莉（坦克）＋兔女郎克萊爾（副輸出）</span></div>
+      <div class="lane"><span class="lane-tag back">後線</span><span>禮服阿塞拉（治療／支援）＋兔女郎夏爾（主力輸出）</span></div>
+      <div class="sub-line">替換：克萊爾→莉莉／阿塞拉→芙蕾</div>
+      <div class="logic">速度優勢明顯，艾蜜莉縮短冷卻，雙兔女郎疊層觸發額外行動，專門克制星屬性 BOSS。</div>
+    </div>
+    <div class="comp-card">
+      <h4>範圍清場隊</h4>
+      <div class="lane"><span class="lane-tag">前線</span><span>希爾德（坦克）＋繆莉爾（副輸出）</span></div>
+      <div class="lane"><span class="lane-tag back">後線</span><span>禮服阿塞拉（治療／支援）＋蒂莉亞（主力輸出）</span></div>
+      <div class="sub-line">替換：繆莉爾→莉迪亞／蒂莉亞→蘿蓓塔</div>
+      <div class="logic">蒂莉亞快速清雜兵，繆莉爾延伸 debuff 壓制血線，適合所有需要快速清場的資源副本。</div>
+    </div>
+  </div>
+
+  <div class="group-label attr-star"><span class="attr-dot"></span><h3>PVP 陣容（競技場・聯盟戰）</h3></div>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <h4>先手爆發隊</h4>
+      <div class="lane"><span class="lane-tag">前線</span><span>艾蜜莉（坦克）＋兔女郎夏爾（主力輸出）</span></div>
+      <div class="lane"><span class="lane-tag back">後線</span><span>希爾德（副坦克）＋兔女郎克萊爾（副輸出）</span></div>
+      <div class="sub-line">替換：希爾德→貝爾・里斯／克萊爾→蒂莉亞</div>
+      <div class="logic">全隊堆速度，艾蜜莉先手嘲諷，夏爾第二回合疊滿點火釋放究極秒殺後衛，克萊爾補刀收尾。</div>
+    </div>
+    <div class="comp-card">
+      <h4>耐久反殺隊</h4>
+      <div class="lane"><span class="lane-tag">前線</span><span>希爾德（坦克）＋艾蜜莉（副坦克）</span></div>
+      <div class="lane"><span class="lane-tag back">後線</span><span>禮服阿塞拉（治療／支援）＋貝爾・里斯（主力輸出）</span></div>
+      <div class="sub-line">替換：阿塞拉→艾麗莎／貝爾・里斯→繆莉爾</div>
+      <div class="logic">雙坦克疊護盾與反傷，阿塞拉持續續航解控，靠後期反傷消耗致死對手。</div>
+    </div>
+    <div class="comp-card">
+      <h4>控制壓制隊</h4>
+      <div class="lane"><span class="lane-tag">前線</span><span>艾蜜莉（坦克）＋莉迪亞（副輸出）</span></div>
+      <div class="lane"><span class="lane-tag back">後線</span><span>繆莉爾（支援／輸出）＋兔女郎夏爾（主力輸出）</span></div>
+      <div class="sub-line">替換：莉迪亞→賽拉／繆莉爾→貝爾・里斯</div>
+      <div class="logic">減速與 debuff 延伸壓制對方行動條，專門克制依賴速度先手的隊伍。</div>
+    </div>
+  </div>
+
+  <div class="group-label attr-moon"><span class="attr-dot"></span><h3>爬塔陣容（宇宙之門）</h3></div>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <h4>乖離的表象（通用層）</h4>
+      <div class="lane"><span class="lane-tag">前線</span><span>艾德（坦克）＋卡內利亞（副輸出）</span></div>
+      <div class="lane"><span class="lane-tag back">後線</span><span>克拉麗莎（控制／輸出）＋花嫁艾賓德爾（主力輸出）</span></div>
+      <div class="sub-line">裝備需求：全隊堆效果命中、攻擊力；克拉麗莎需 180 以上效果命中</div>
+      <div class="logic">克拉麗莎範圍控制、卡內利亞觸發不死身效果，艾德加快全隊技能循環。</div>
+    </div>
+    <div class="comp-card">
+      <h4>基勒（高難度 BOSS 層）</h4>
+      <div class="lane"><span class="lane-tag">前線</span><span>艾蜜莉（坦克）＋兔女郎夏爾（主力輸出）</span></div>
+      <div class="lane"><span class="lane-tag back">後線</span><span>禮服阿塞拉（治療／支援）＋蒂莉亞（副輸出）</span></div>
+      <div class="sub-line">裝備需求：夏爾堆暴擊傷害、速度；蒂莉亞堆範圍傷害</div>
+      <div class="logic">建議在 BOSS 破韌後再釋放究極技能，最大化夏爾的爆發傷害。</div>
+    </div>
+  </div>
+
+  <div class="group-label attr-sun"><span class="attr-dot"></span><h3>公會戰陣容（公會防禦戰）</h3></div>
+  <div class="comp-grid">
+    <div class="comp-card">
+      <h4>過熱控制隊</h4>
+      <div class="lane"><span class="lane-tag">前線</span><span>艾蜜莉（坦克）＋兔女郎芙蕾（副輸出）</span></div>
+      <div class="lane"><span class="lane-tag back">後線</span><span>禮服阿塞拉（治療／支援）＋兔女郎克萊爾（主力輸出）</span></div>
+      <div class="sub-line">裝備需求：全隊堆速度、攻擊力；芙蕾需堆暴擊率</div>
+      <div class="logic">BOSS 受擊累積過熱層數，5 層後癱瘓 1 回合，趁機全隊釋放究極技能輸出。</div>
+    </div>
+    <div class="comp-card">
+      <h4>高輸出爆發隊</h4>
+      <div class="lane"><span class="lane-tag">前線</span><span>艾蜜莉（坦克）＋兔女郎夏爾（主力輸出）</span></div>
+      <div class="lane"><span class="lane-tag back">後線</span><span>賽拉（加速／支援）＋莉迪亞（破甲／支援）</span></div>
+      <div class="sub-line">裝備需求：夏爾堆暴擊傷害、攻擊力；賽拉、莉迪亞堆效果命中、速度</div>
+      <div class="logic">賽拉推條加速、莉迪亞疊破甲，夏爾在破韌期間連續釋放究極技能，爭取公會戰高排名。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PANEL 5 : 補充要點 ===================== -->
+<div class="panel" id="p5">
+  <div class="section-title"><span class="idx">伍</span><h2>攻略補充說明</h2></div>
+  <p class="section-desc">實戰中容易被忽略、但影響培養效率與勝率的六個重點。</p>
+
+  <div class="tip-list">
+    <div class="tip"><span class="num">01</span><div><div class="tip-title">屬性克制優先度</div><p>實戰中優先根據副本屬性選擇克制角色；輸出優先選克制屬性，坦克選被克制機率低的屬性。</p></div></div>
+    <div class="tip"><span class="num">02</span><div><div class="tip-title">破韌機制</div><p>所有 BOSS 都有韌性條，需用破韌技能打斷大招；隊伍中至少攜帶 1 名破韌角色，如兔女郎克萊爾、莉迪亞、克拉麗莎。</p></div></div>
+    <div class="tip"><span class="num">03</span><div><div class="tip-title">潛力刷取</div><p>困難旅程模式是獲得核心潛力的主要途徑，優先刷取 AXN、BXN、DXN 系列，依角色定位搭配。</p></div></div>
+    <div class="tip"><span class="num">04</span><div><div class="tip-title">技能升級優先度</div><p>輸出角色：特殊技能 > 究極技能 > 基本技能；坦克：特殊技能 > 基本技能 > 究極技能；支援：特殊技能 > 究極技能 > 基本技能。</p></div></div>
+    <div class="tip"><span class="num">05</span><div><div class="tip-title">陣容替換原則</div><p>沒有核心角色時，優先選擇同屬性同定位的上位替代，例如希爾德可替換為卡門，禮服阿塞拉可替換為艾麗莎。</p></div></div>
+    <div class="tip"><span class="num">06</span><div><div class="tip-title">版本更新追蹤</div><p>關注官方粉絲團、巴哈姆特專區的角色調整與新系統上線，及時調整陣容配置與角色養成優先度。</p></div></div>
+  </div>
+</div>
+
+<footer>《星絆之旅》Star Savior 玩家整理攻略・依 v1.0.19 版本內容製作，數值以遊戲內實際顯示為準</footer>
+
+</body>
+</html>
